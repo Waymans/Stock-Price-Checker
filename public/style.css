@@ -1,0 +1,35 @@
+
+/****** Main Styling ******/
+
+body {
+  font-family: 'Monospace', sans-serif;
+  font-size: 16px;
+  color: #222;
+  background-color: lightsteelblue;
+  line-height: 2em
+}
+
+li {
+  font-size: 15px;
+}
+
+.footer {
+  margin-top: 40px;
+}
+
+a {
+  color: maroon;
+}
+
+a:hover {
+  color: olive 
+}
+
+code {
+  font-size: 15px;
+}
+
+.iex {
+  font-size: 12px; 
+  line-height: 20px;
+}

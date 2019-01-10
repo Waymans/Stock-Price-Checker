@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome to HyperDev!</title>
+    <meta name="description" content="A cool thing made with HyperDev">
+    <link id="favicon" rel="icon" href="https://hyperdev.com/favicon-app.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./public/style.css">
+  </head>
+  <body>
+    <header>
+      <h1>
+        Nasdaq Stock Price Checker
+      </h1>
+    </header>
+    <hr>
+    <div id="testui">
+      <h2 style="text-align: left">Front-End:</h2>
+      <h3>Get single price and total likes.</h3>
+      <form id="testForm">
+        <input type="text" id="stock" placeholder="goog" style="width: 100px" required>
+        <input type="checkbox" id="like1" value="true"> Like?<br>
+        <button type="submit">Get Price!</button>
+      </form>
+      <h3>Compare and get relative likes.</h3>
+      <form id="testForm2">
+        <input type="text" id="stock1" placeholder="goog" style="width: 100px" required>
+        <input type="text" id="stock2" placeholder="msft" style="width: 100px" required>
+        <input type="checkbox" id="like2" value="true"> Like both?<br>
+        <button type="submit">Get Price!</button>
+      </form>
+    <code id="jsonResult"></code>
+    <p class="iex">
+      Data provided for free by <a href="https://iextrading.com/developer/" target="_blank">IEX</a>. View <a href="https://iextrading.com/api-exhibit-a" target="_blank">IEX’s Terms of Use</a>. <br>
+      Json will disappear if IEX updates the data.
+    </p>
+    </div>
+    <hr style="margin-top: 0px">
+    <div id="userstories" style="margin-top: 30px">
+      <h3>User Stories</h3>
+      <ol>
+        <li>Set the content security policies to only allow loading of scripts and css from your server.</li>
+        <li>I can <b>GET</b> <code>/api/stock-prices</code> with form data containing a Nasdaq <i>stock</i> ticker and recieve back an object <i>stockData</i>.</li>
+        <li>In <i>stockData</i>, I can see the <i>stock</i>(string, the ticker), <i>price</i>(decimal in string format), and <i>likes</i>(int).</li>
+        <li>I can also pass along field <i>like</i> as <b>true</b>(boolean) to have my like added to the stock(s). Only 1 like per ip should be accepted.</li>
+        <li>If I pass along 2 stocks, the return object will be an array with both stock's info but instead of <i>likes</i>, it will display <i>rel_likes</i>(the difference between the likes on both) on both.</li>
+        <li>A good way to receive current price is the following external API(replacing 'GOOG' with your stock): <code>https://finance.google.com/finance/info?q=NASDAQ%3aGOOG</code></li>
+        <li>All 5 functional tests are complete and passing.</li>
+      </ol>
+      <h3>Example usage:</h3>
+      <a href="https://stock-price1-project.glitch.me/api/stock-prices?stock=goog"><code>/api/stock-prices?stock=goog</code></a><br>
+      <a href="https://stock-price1-project.glitch.me/api/stock-prices?stock=goog&like=true"><code>/api/stock-prices?stock=goog&amp;like=true</code></a><br>
+      <a href="https://stock-price1-project.glitch.me/api/stock-prices?stock=goog&stock=msft"><code>/api/stock-prices?stock=goog&amp;stock=msft</code></a><br>
+      <a href="https://stock-price1-project.glitch.me/api/stock-prices?stock=goog&stock=msft&like=true"><code>/api/stock-prices?stock=goog&amp;stock=msft&amp;like=true</code></a><br>
+      <h3>Example return:</h3>
+      <code>{"stockData":{"stock":"GOOG","price":"786.90","likes":1}}</code><br>
+      <code>{"stockData":[{"stock":"MSFT","price":"62.30","rel_likes":-1},{"stock":"GOOG","price":"786.90","rel_likes":1}]}</code>
+    </div>
+    <div class="footer">
+      <p>
+        Check out my other projects on <a href="https://www.codepen.io/Waymans" target="_blank">Codepen</a>.
+      </p>
+    </div>
+    <script
+			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			  crossorigin="anonymous"></script>
+    <script>
+      $('#testForm')[0].addEventListener('submit', (e) => {
+        e.preventDefault();
+        const stock = $('#stock')[0].value;
+        const like1 = $('#like1')[0].checked;
+        fetch('/api/stock-prices?stock='+stock+'&like='+like1)
+          .then(res=>res.json())
+          .then(res=>{
+            $('#jsonResult')[0].innerHTML = JSON.stringify(res, null, ' ');
+          })
+          .catch(err=>{throw err});
+      });
+      $('#testForm2')[0].addEventListener('submit', (e) => {
+        e.preventDefault();
+        const stock1 = $('#stock1')[0].value;
+        const stock2 = $('#stock2')[0].value;   
+        const like2 = $('#like2')[0].checked;
+        fetch('/api/stock-prices?stock='+stock1+'&stock='+stock2+'&like='+like2)
+          .then(res=>res.json())
+          .then(res=>{
+            $('#jsonResult')[0].innerHTML = JSON.stringify(res, null, ' ');
+          })
+          .catch(err=>{throw err});
+      });
+    </script>
+  </body>
+</html>
